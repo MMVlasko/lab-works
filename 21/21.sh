@@ -1,13 +1,13 @@
 if [[ $1 = "?" ]]; then
   echo "Usage:"
-  echo "  $(basename -- "$0") <maximum file size (bytes)> <suffix> <output file name> [-i] [-d]"
+  echo "  ./$(basename -- "$0") <maximum file size (bytes)> <suffix> <output file name> [-i] [-d]"
   echo $'\nKeys:\n  -i    Show information about the progress of the merger'
   echo $'  -d    Delete source files'
   read -r
   exit
 fi
 
-home=$(pwd)
+home=$(dirname "$0")
 touch "$3"
 
 for name in "$home"/*
