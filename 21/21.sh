@@ -7,19 +7,16 @@ if [[ $1 = "?" ]]; then
   exit
 fi
 
-home=$(dirname "$0")
-touch "$3"
-
-for name in "$home"/*
+for name in "$(dirname "$0")"/*
 do
   if [[ -f $name ]]; then
-    extension="${name##*.}"
-    size=$(stat -c %s "$name")
-    if [[ $size -le $1 && $extension = "$2" ]]; then
+    if [[ $(stat -c %s "$name") -le $1 && "${name##*.}" = "$2" ]]; then
       cat "$name" >> "$3"
+
       if [[ $4 = "-i" || $5 = "-i" ]]; then
         echo "INFO: file <$(basename -- "$name")> insert to <$3>"
       fi
+
       if [[ $4 = "-d" || $5 = "-d" ]]; then
         rm "$name"
       fi
