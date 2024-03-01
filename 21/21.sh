@@ -24,8 +24,5 @@ do
   fi
 done
 
-if [[ $4 = "-i" || $5 = "-i" ]]; then
-  echo "INFO: completed"
-fi
-
+echo "INFO: completed"
 read -r
