@@ -3,7 +3,6 @@
 #include <string.h>
 
 typedef struct node {
-    int visited;
     float value;
     struct node *left;
     struct node *right;
@@ -15,9 +14,15 @@ BNode *new_node(float data) {
     node->value = data;
     node->left = NULL;
     node->right = NULL;
-    node->visited = 0;
     node->parent = NULL;
     return node;
+}
+
+float min(float a, float b) {
+    if (a < b)
+        return a;
+    else
+        return b;
 }
 
 void insert(BNode *tree, float data) {
@@ -27,69 +32,106 @@ void insert(BNode *tree, float data) {
     } else if (tree->right == NULL && data >= tree->value) {
         tree->right = new_node(data);
         tree->right->parent = tree;
-    } else if (data <= tree->value) {
+    } else if (data <= tree->value)
         insert(tree->left, data);
-    } else {
+    else
         insert(tree->right, data);
-    }
 }
 
-void visual(BNode *tree, int level, int jump) {
-    if (!(tree->visited)) {
+void visual(BNode *tree, int level, int jump, const char mode[2]) {
+    if (mode[0] == 'f') {
         if (jump) {
-            for (int i = 0; i < level * 16; i++) {
+            for (int i = 0; i < level * 16; i++)
                 printf(" ");
-            }
             printf(".\n");
-            for (int i = 0; i < level * 16; i++) {
+            for (int i = 0; i < level * 16; i++)
                 printf(" ");
-            }
             jump = 0;
         }
 
         if (tree->right == NULL) {
             printf(" . . . .%08.4f\n", tree->value);
             jump = 1;
-        } else {
+        } else
             printf(" . . . .%08.4f", tree->value);
-        }
-        tree->visited = 1;
     }
+    if (mode[0] == 'f') {
+        if (tree->right == NULL && tree->left == NULL && tree->parent != NULL) {
+            if (mode[1] == 'r')
+                visual(tree->parent, level - 1, jump, "br");
+            else
+                visual(tree->parent, level - 1, jump, "bl");
+        } else if (tree->right != NULL)
+            visual(tree->right, level + 1, jump, "fr");
+        else if (tree->left != NULL)
+            visual(tree->left, level + 1, jump, "fl");
 
-    if (tree->left == NULL && tree->right == NULL && tree->parent == NULL){
-        tree->visited = 0;
-        return;
+    }  else if (mode[0] == 'b') {
+        if (mode[1] == 'r' && tree->left != NULL)
+            visual(tree->left, level + 1, jump, "fl");
+        else if (tree->parent != NULL) {
+            if (tree->parent->right == tree)
+                visual(tree->parent, level - 1, jump, "br");
+            else if (tree->parent->left == tree)
+                visual(tree->parent, level - 1, jump, "bl");
+        }
     }
+}
 
-    if (tree->left == NULL && tree->right == NULL && tree->parent != NULL) {
-        visual(tree->parent, level - 1, jump);
-    } else if (tree->right == NULL) {
-        if (!tree->left->visited) {
-            visual(tree->left, level + 1, jump);
-        } else {
-            tree->left->visited = 0;
-            if (tree->parent != NULL) visual(tree->parent, level - 1, jump); else tree->visited = 0;
+float minimum(BNode *tree) {
+    if (tree->right == NULL && tree->left == NULL)
+        return tree->value;
+    else if (tree->right == NULL)
+        return min(tree->value, minimum(tree->left));
+    else if (tree->left == NULL)
+        return min(tree->value, minimum(tree->right));
+    else
+        return min(tree->value, min(minimum(tree->right), minimum(tree->left)));
+}
+
+int delete(BNode *tree, float target) {
+    if (target < tree->value)
+        delete(tree->left, target);
+    else if (target > tree->value)
+        delete(tree->right, target);
+    else if (tree->left != NULL && tree->right != NULL) {
+        float num = minimum(tree->right);
+        delete(tree, num);
+        tree->value = num;
+    } else if (tree->parent != NULL) {
+        if (tree->right == NULL && tree->left == NULL) {
+            if (tree->parent->right == tree)
+                tree->parent->right = NULL;
+            else
+                tree->parent->left = NULL;
+            free(tree);
+        } else if (tree->right == NULL) {
+            tree->left->parent = tree->parent;
+            if (tree->parent->right == tree)
+                tree->parent->right = tree->left;
+            else
+                tree->parent->left = tree->left;
+        } else if (tree->left == NULL) {
+            tree->right->parent = tree->parent;
+            if (tree->parent->right == tree)
+                tree->parent->right = tree->right;
+            else
+                tree->parent->left = tree->right;
         }
-    } else if (tree->left == NULL) {
-        if (!tree->right->visited) {
-            visual(tree->right, level + 1, jump);
-        } else {
-            tree->right->visited = 0;
-            if (tree->parent != NULL) visual(tree->parent, level - 1, jump); else tree->visited = 0;
-        }
-    } else if (tree->left->visited && tree->right->visited && tree->parent != NULL) {
-        tree->left->visited = 0;
-        tree->right->visited = 0;
-        visual(tree->parent, level - 1, jump);
-    } else if (!(tree->right->visited)) {
-        visual(tree->right, level + 1, jump);
-    } else if (!(tree->left->visited)) {
-        visual(tree->left, level + 1, jump);
     } else {
-        tree->visited = 0;
-        if (tree->left != NULL) tree->left->visited = 0;
-        if (tree->right != NULL) tree->right->visited = 0;
+        if (tree->right == NULL && tree->left == NULL)
+            return 0;
+        else if (tree->right == NULL) {
+            tree->value = tree->left->value;
+            tree->right = tree->left->right;
+            tree->left = tree->left->left;
+        } else {
+            tree->value = tree->right->value;
+            tree->left = tree->right->left;
+            tree->right = tree->right->right;
+        }
     }
+    return 1;
 }
 
 int main() {
@@ -99,7 +141,7 @@ int main() {
     while (1) {
         printf("tree> ");
         scanf("%s", chr);
-        if (!strcmp(chr, "insert")) {
+        if (!strcmp(chr, "ins")) {
             float data;
             scanf("%f", &data);
             if (node == NULL) {
@@ -108,14 +150,27 @@ int main() {
                 insert(node, data);
             }
         }
+        if (!strcmp(chr, "del")) {
+            float data;
+            scanf("%f", &data);
+            if (node == NULL) {
+                printf("null");
+            } else {
+                if (!delete(node, data)) node = NULL;
+            }
+        }
         if (!strcmp(chr, "show")) {
             if (node != NULL) {
-                visual(node, 0, 1);
+                visual(node, 0, 1, "fr");
                 printf(" ");
             } else printf("null\n ");
 
         }
         if (!strcmp(chr, "exit")) return 0;
-        if (!strcmp(chr, "clear")) node = NULL;
+        if (!strcmp(chr, "clear")) {
+            while (!(node->right == NULL && node->left == NULL))
+                delete(node, node->value);
+            node = NULL;
+        }
     }
 }
