@@ -38,7 +38,7 @@ void insert(BNode *tree, float data) {
         insert(tree->right, data);
 }
 
-void visual(BNode *tree, int level, int jump, const char mode[2]) {
+void show(BNode *tree, int level, int jump, const char mode[2]) {
     if (mode[0] == 'f') {
         if (jump) {
             for (int i = 0; i < level * 16; i++)
@@ -58,22 +58,22 @@ void visual(BNode *tree, int level, int jump, const char mode[2]) {
     if (mode[0] == 'f') {
         if (tree->right == NULL && tree->left == NULL && tree->parent != NULL) {
             if (mode[1] == 'r')
-                visual(tree->parent, level - 1, jump, "br");
+                show(tree->parent, level - 1, jump, "br");
             else
-                visual(tree->parent, level - 1, jump, "bl");
+                show(tree->parent, level - 1, jump, "bl");
         } else if (tree->right != NULL)
-            visual(tree->right, level + 1, jump, "fr");
+            show(tree->right, level + 1, jump, "fr");
         else if (tree->left != NULL)
-            visual(tree->left, level + 1, jump, "fl");
+            show(tree->left, level + 1, jump, "fl");
 
     }  else if (mode[0] == 'b') {
         if (mode[1] == 'r' && tree->left != NULL)
-            visual(tree->left, level + 1, jump, "fl");
+            show(tree->left, level + 1, jump, "fl");
         else if (tree->parent != NULL) {
             if (tree->parent->right == tree)
-                visual(tree->parent, level - 1, jump, "br");
+                show(tree->parent, level - 1, jump, "br");
             else if (tree->parent->left == tree)
-                visual(tree->parent, level - 1, jump, "bl");
+                show(tree->parent, level - 1, jump, "bl");
         }
     }
 }
@@ -150,15 +150,15 @@ int is_btree(BNode *tree) {
 int main() {
     char chr[15];
     BNode *node = NULL;
-    printf(" ");
+    printf("Type 'help' to take info\n\n ");
     while (1) {
         printf("tree> ");
         scanf("%s", chr);
         if (!strcmp(chr, "check")) {
             if (node == NULL || !is_btree(node))
-                printf("NO\n\n ");
+                printf("NO\n\n");
             else
-                printf("YES\n\n ");
+                printf("YES\n\n");
             printf(" ");
         }
         if (!strcmp(chr, "ins")) {
@@ -185,7 +185,7 @@ int main() {
         }
         if (!strcmp(chr, "show")) {
             if (node != NULL) {
-                visual(node, 0, 1, "fr");
+                show(node, 0, 1, "fr");
                 printf("\n ");
             } else printf("NULL\n\n ");
 
@@ -197,7 +197,7 @@ int main() {
             printf(" del <number> : delete element from tree\n");
             printf(" clear : destroy tree\n");
             printf(" check : check tree for 'B-tree' condition\n");
-            printf("exit : complete the work\n\n ");
+            printf(" exit : complete the work\n\n ");
         }
         if (!strcmp(chr, "clear")) {
             while (!(node->right == NULL && node->left == NULL))
