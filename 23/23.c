@@ -90,10 +90,14 @@ float minimum(BNode *tree) {
 }
 
 int delete(BNode *tree, float target) {
-    if (target < tree->value)
-        delete(tree->left, target);
-    else if (target > tree->value)
-        delete(tree->right, target);
+    if (target != tree->value) {
+        if (tree->left == NULL && tree->right == NULL)
+            return -1;
+        else if (target < tree->value)
+            delete(tree->left, target);
+        else if (target > tree->value)
+            delete(tree->right, target);
+    }
     else if (tree->left != NULL && tree->right != NULL) {
         float num = minimum(tree->right);
         delete(tree, num);
@@ -134,6 +138,15 @@ int delete(BNode *tree, float target) {
     return 1;
 }
 
+int is_btree(BNode *tree) {
+    if ((tree->left != NULL && tree->right == NULL) || (tree->left == NULL && tree->right != NULL))
+        return 0;
+    else if (tree->left == NULL && tree->right == NULL)
+        return 1;
+    else
+        return is_btree(tree->left) && is_btree(tree->right);
+}
+
 int main() {
     char chr[15];
     BNode *node = NULL;
@@ -141,6 +154,13 @@ int main() {
     while (1) {
         printf("tree> ");
         scanf("%s", chr);
+        if (!strcmp(chr, "check")) {
+            if (node == NULL || !is_btree(node))
+                printf("NO\n\n ");
+            else
+                printf("YES\n\n ");
+            printf(" ");
+        }
         if (!strcmp(chr, "ins")) {
             float data;
             scanf("%f", &data);
@@ -149,28 +169,41 @@ int main() {
             } else {
                 insert(node, data);
             }
+            printf("OK\n\n ");
         }
         if (!strcmp(chr, "del")) {
             float data;
             scanf("%f", &data);
             if (node == NULL) {
-                printf("null");
+                printf("ELEMENT NOT EXIST\n\n ");
             } else {
-                if (!delete(node, data)) node = NULL;
+                int state = delete(node, data);
+                if (!state) node = NULL;
+                if (state == -1) printf("ELEMENT NOT EXIST\n\n ");
+                else printf("OK\n\n ");
             }
         }
         if (!strcmp(chr, "show")) {
             if (node != NULL) {
                 visual(node, 0, 1, "fr");
-                printf(" ");
-            } else printf("null\n ");
+                printf("\n ");
+            } else printf("NULL\n\n ");
 
         }
         if (!strcmp(chr, "exit")) return 0;
+        if (!strcmp(chr, "help")) {
+            printf("ins <number> : insert element to tree\n");
+            printf(" show : show tree in console\n");
+            printf(" del <number> : delete element from tree\n");
+            printf(" clear : destroy tree\n");
+            printf(" check : check tree for 'B-tree' condition\n");
+            printf("exit : complete the work\n\n ");
+        }
         if (!strcmp(chr, "clear")) {
             while (!(node->right == NULL && node->left == NULL))
                 delete(node, node->value);
             node = NULL;
+            printf("OK\n\n ");
         }
     }
 }
