@@ -161,7 +161,7 @@ int main() {
                 printf("YES\n\n ");
             printf(" ");
         }
-        if (!strcmp(chr, "ins")) {
+        if (!strcmp(chr, "add")) {
             float data;
             scanf("%f", &data);
             if (node == NULL) {
@@ -192,12 +192,12 @@ int main() {
         }
         if (!strcmp(chr, "exit")) return 0;
         if (!strcmp(chr, "help")) {
-            printf("ins <number> : insert element to tree\n");
+            printf(" add <number> : add element to tree\n");
             printf(" show : show tree in console\n");
             printf(" del <number> : delete element from tree\n");
             printf(" clear : destroy tree\n");
             printf(" check : check tree for 'B-tree' condition\n");
-            printf("exit : complete the work\n\n ");
+            printf(" exit : complete the work\n\n ");
         }
         if (!strcmp(chr, "clear")) {
             while (!(node->right == NULL && node->left == NULL))
