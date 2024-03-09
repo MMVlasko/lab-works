@@ -23,13 +23,14 @@ float min(float a, float b) {
 }
 
 void insert(BNode *tree, float data) {
-    if (tree->left == NULL && data <= tree->value) {
+    if (tree->value == data) return;
+    if (tree->left == NULL && data < tree->value) {
         tree->left = new_node(data);
         tree->left->parent = tree;
-    } else if (tree->right == NULL && data >= tree->value) {
+    } else if (tree->right == NULL && data > tree->value) {
         tree->right = new_node(data);
         tree->right->parent = tree;
-    } else if (data <= tree->value)
+    } else if (data < tree->value)
         insert(tree->left, data);
     else
         insert(tree->right, data);
@@ -94,8 +95,7 @@ int delete(BNode *tree, float target) {
             delete(tree->left, target);
         else if (target > tree->value)
             delete(tree->right, target);
-    }
-    else if (tree->left != NULL && tree->right != NULL) {
+    } else if (tree->left != NULL && tree->right != NULL) {
         float num = minimum(tree->right);
         delete(tree, num);
         tree->value = num;
