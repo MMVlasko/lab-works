@@ -24,7 +24,7 @@ do
         echo "INFO: file <$(basename -- "$name")> (size: $(stat -c %s "$name") b) insert to <$out>"
       fi
 
-      if [[ $4 = "-d" || $5 = "-d" ]]; then
+      if [[ $@ =~ "-d" ]]; then
         rm "$name"
       fi
     fi
