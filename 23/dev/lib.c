@@ -4,7 +4,8 @@
 
 BNode *new_node(float data) {
     BNode *node = (BNode*)malloc(sizeof(BNode));
-    node->value = data;                                                                                                                                                          node->left = NULL;
+    node->value = data;
+    node->left = NULL;
     node->right = NULL;
     node->parent = NULL;
     return node;
@@ -12,7 +13,8 @@ BNode *new_node(float data) {
 float min(float a, float b) {
     if (a < b)
         return a;
-    else                                                                                                                                                                             return b;
+    else
+        return b;
 }
 
 void insert(BNode *tree, float data) {
