@@ -1,8 +1,8 @@
-trees: lib.o main.o
-	gcc -o trees lib.o main.o
+trees: lib.o tree.o
+	gcc -o trees lib.o tree.o
 
-main.o:
-	gcc --std=c99 --pedantic -Wall -c main.c
+tree.o:
+	gcc --std=c99 --pedantic -Wall -c tree.c
 
 lib.o:
 	gcc --std=c99 --pedantic -Wall -c lib.c
