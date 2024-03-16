@@ -42,7 +42,7 @@ int main(void) {
             if (node != NULL) {
                 show(node, 0, 1, "fr");
                 printf("\n ");
-            } else printf(" NULL\n\n ");
+            } else printf(" EMPTY\n\n ");
 
         }
         if (!strcmp(chr, "exit")) return 0;

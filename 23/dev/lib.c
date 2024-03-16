@@ -83,13 +83,15 @@ float minimum(BNode *tree) {
 }
 
 int delete(BNode *tree, float target) {
+    if (tree == NULL)
+        return -1;
     if (target != tree->value) {
         if (tree->left == NULL && tree->right == NULL)
             return -1;
         else if (target < tree->value)
-            delete(tree->left, target);
+            return delete(tree->left, target);
         else if (target > tree->value)
-            delete(tree->right, target);
+            return delete(tree->right, target);
     } else if (tree->left != NULL && tree->right != NULL) {
         float num = minimum(tree->right);
         delete(tree, num);
