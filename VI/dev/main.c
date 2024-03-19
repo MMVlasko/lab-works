@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <string.h>
+#include "computer.h"
+#include "tools.h"
+
+
+int main(int argc, char* argv[]){
+    if (argc < 2) {
+        usage();
+        return 0;
+    }
+
+    char args[5] = {0, 0, 0, 0, 0};
+    for (int i = 0; i < argc; i++) {
+        if (!strcmp(argv[i], "-g")) args[0] = 1;
+        else if (!strcmp(argv[i], "-f")) args[1] = 1;
+        else if (!strcmp(argv[i], "-i")) args[2] = 1;
+        else if (!strcmp(argv[i], "-p")) args[3] = 1;
+        else if (!strcmp(argv[i], "-d")) args[4] = 1;
+    }
+
+    if (args[0]) {
+        FILE* fileToRead = fopen("default.txt", "r");
+        FILE* fileToWrite = fopen("database.dat", "a+");
+        write_computer(fileToRead, fileToWrite);
+    }
+
+    if (args[1]) {
+        char rowDivider[232];
+        memset(rowDivider, '=', 230);
+        FILE* file = fopen("database.dat", "r");
+        printFile(file, rowDivider, false);
+    }
+
+    if (args[2])
+        save_input_computer("database.dat");
+
+    if (args[3]) {
+        char rowDivider[232];
+        memset(rowDivider, '=', 231);
+        FILE* file = fopen("database.dat", "r");
+        printFile(file, rowDivider, true);
+    }
+
+    if (args[4])
+        remove("database.dat");
+
+    return 0;
+}

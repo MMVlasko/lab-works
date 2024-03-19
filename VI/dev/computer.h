@@ -1,23 +1,25 @@
 #ifndef LAB_WORKS_2_COMPUTER_H
 #define LAB_WORKS_2_COMPUTER_H
-#define MAX_LENGTH 20
+#include <stdbool.h>
 
 typedef enum {
     Builtin,
     External,
     AGP,
-    PCI
+    PCI,
+    vc_error
 } vc;
 
 typedef enum {
     SCSI_IDE,
-    ATA_SATA
+    ATA_SATA,
+    vmt_error
 } vmt;
 
 typedef struct {
-    char *name;
+    char name[100];
     int number_of_processors;
-    char *type_of_processors;
+    char type_of_processors[100];
     int memory_capacity;
     vc video_controller;
     int video_memory_capacity;
@@ -26,8 +28,10 @@ typedef struct {
     int capacity_of_hard_drives;
     int number_of_integrated_controllers;
     int number_of_external_devices;
-    char *os;
+    char os[100];
+    bool is_branded;
 } Computer;
 
 Computer *input_computer(void);
+
 #endif
