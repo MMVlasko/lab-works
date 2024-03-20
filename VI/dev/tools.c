@@ -108,10 +108,13 @@ void usage(void) {
 void printFile(FILE* file, char divider[232], bool select) {
     printf("%s\n", divider);
     printf("%s\n", HEADER);
+    printf("%s\n", divider);
     Computer computer;
     while (fread(&computer, sizeof(Computer), 1, file) == 1) {
-        if (computer.is_branded || !select)
+        if (computer.is_branded || !select) {
             printPerson(&computer);
+            printf("%s\n", divider);
+        }
     }
     fclose(file);
 }

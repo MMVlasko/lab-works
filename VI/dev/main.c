@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
 
     if (args[1]) {
         char rowDivider[232];
-        memset(rowDivider, '=', 230);
+        memset(rowDivider, '-', 230);
         FILE* file = fopen("database.dat", "r");
         printFile(file, rowDivider, false);
     }
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
 
     if (args[3]) {
         char rowDivider[232];
-        memset(rowDivider, '=', 231);
+        memset(rowDivider, '-', 231);
         FILE* file = fopen("database.dat", "r");
         printFile(file, rowDivider, true);
     }
