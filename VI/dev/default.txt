@@ -12,4 +12,5 @@ Gagarin 432 IBM 663 PCI 73 ATA/SATA 893 838 232 299 Linux false
 Girkin 566 IBM 32 External 88 SCSI/IDE 832 176 727 31 macOS true
 Sharapov 832 Intel 23 External 85 ATA/SATA 83 221 84 81 Windows true
 Bunko 830 Intel 81 Builtin 90 SCSI/IDE 939 99 221 48 Linux false
-Zhuk 772 AMD 89 PCI 82 SCSI/IDE 883 882 991 11 Colibri OS true
+Zhuk 772 AMD 89 PCI 82 SCSI/IDE 883 882 991 11 ColibriOS true
+
