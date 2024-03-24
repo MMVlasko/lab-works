@@ -21,7 +21,7 @@ void save_input_computer(char[20]);
 
 void usage(void);
 
-void printFile(FILE*, char[252], bool);
+void printFile(FILE*, char[232], bool);
 
 bool Branded(char[5]);
 
