@@ -20,6 +20,7 @@ void append(int value, List *list) {
 
     if (list->head == NULL) {
         list->head = element;
+        element->prev = NULL;
         list->size = 1;
         return;
     }
@@ -76,4 +77,29 @@ void print_list(List* list) {
     }
     printf("%d]\n", iter->node->value);
     free(iter);
+}
+
+int delete(int target, List *list) {
+    if (!list->size)
+        return 0;
+    Iterator *iter = (Iterator*)malloc(sizeof(Iterator));
+    iter->node = list->head;
+    while (iter->node->value != target) {
+        if (iter->node->next == NULL)
+            return 0;
+        next(iter);
+    }
+    if (iter->node->next != NULL && iter->node->prev != NULL) {
+        iter->node->prev->next = iter->node->next;
+        iter->node->next->prev = iter->node->prev;
+    } else if (iter->node->next == NULL)
+        iter->node->prev->next = NULL;
+    else {
+        iter->node->next->prev = NULL;
+        list->head = iter->node->next;
+    }
+    free(iter->node);
+    free(iter);
+    list->size--;
+    return 1;
 }

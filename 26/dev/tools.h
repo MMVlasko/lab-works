@@ -26,4 +26,6 @@ int insert_after(int, int, List*);
 
 void print_list(List*);
 
+int delete(int, List*);
+
 #endif
