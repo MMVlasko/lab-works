@@ -3,17 +3,14 @@
 
 int main() {
     List *list = new_list();
-    append(2, list);
-    for (int i = 0; i < 10; ++i) {
-        append(1, list);
+    append(0, list);
+    append(-11, list);
+    for (int i = 30; i > 0; i--) {
+        append(i, list);
     }
+    append(-1, list);
     print_list(list);
-    delete(2, list);
+    sort(list, list->head, NULL, list->size);
     print_list(list);
-//    print_list(list);
-//    delete(2, list);
-//    print_list(list);
-//    delete(2, list);
-//    print_list(list);
     return 0;
 }

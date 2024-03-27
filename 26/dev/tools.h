@@ -22,10 +22,12 @@ void next(Iterator*);
 
 void append(int, List*);
 
-int insert_after(int, int, List*);
+int insert_after(ListNode*, int, List*);
 
 void print_list(List*);
 
-int delete(int, List*);
+int delete(ListNode*, List*);
+
+void sort(List*, ListNode*, ListNode*, int);
 
 #endif
